@@ -10,17 +10,38 @@
   --bg:#0b0f19;--card:#151d2f;--text:#fff;--accent:#b8860b;--muted:#94a3b8;
 }
 *{box-sizing:border-box;margin:0;padding:0;font-family:'Inter',sans-serif;text-transform:uppercase;}
-body{background:var(--bg);color:var(--text);display:flex;align-items:center;justify-content:center;min-height:100vh;padding:1rem;}
+body{
+  background:var(--bg);
+  color:var(--text);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  min-height:100vh;
+  padding:1rem;
+}
 form{
   background:var(--card);
   padding:1.5rem;
   border-radius:1rem;
   width:100%;
-  max-width:400px;
-  box-shadow:0 0 10px #0003;
+  max-width:420px;
+  box-shadow:0 0 15px #0005;
+  position:relative;
+  overflow:hidden;
 }
-h2{text-align:center;margin-bottom:1rem;color:var(--accent);}
-label{display:block;margin-top:1rem;font-weight:600;color:var(--muted);font-size:.85rem;}
+h2{
+  text-align:center;
+  margin-bottom:1rem;
+  color:var(--accent);
+  letter-spacing:1px;
+}
+label{
+  display:block;
+  margin-top:1rem;
+  font-weight:600;
+  color:var(--muted);
+  font-size:.85rem;
+}
 input,select,textarea{
   width:100%;
   padding:.75rem;
@@ -32,18 +53,20 @@ input,select,textarea{
   font-size:.9rem;
 }
 button{
-  margin-top:1.5rem;
+  margin-top:1.8rem;
   width:100%;
-  padding:.9rem;
+  padding:1rem;
   background:var(--accent);
   border:none;
   border-radius:.5rem;
   color:#fff;
   font-weight:600;
   font-size:1rem;
+  letter-spacing:.5px;
   cursor:pointer;
+  transition:.3s;
 }
-button:active{opacity:.8;}
+button:hover{opacity:.9;transform:scale(1.02);}
 small{
   display:block;
   text-align:center;
@@ -51,6 +74,45 @@ small{
   margin-top:1rem;
   font-size:.8rem;
   line-height:1.3;
+}
+
+/* animação de sucesso */
+#sucesso{
+  position:absolute;
+  inset:0;
+  background:rgba(0,0,0,.8);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-direction:column;
+  color:#fff;
+  font-size:1rem;
+  backdrop-filter:blur(5px);
+  opacity:0;
+  pointer-events:none;
+  transition:opacity .5s;
+}
+#sucesso.active{opacity:1;pointer-events:all;}
+.check{
+  width:80px;height:80px;
+  border:4px solid #16a34a;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  margin-bottom:1rem;
+}
+.check::after{
+  content:'';
+  width:30px;height:15px;
+  border-left:4px solid #16a34a;
+  border-bottom:4px solid #16a34a;
+  transform:rotate(-45deg);
+  animation:pop .5s ease-out forwards;
+}
+@keyframes pop{
+  0%{transform:scale(0) rotate(-45deg);opacity:0;}
+  100%{transform:scale(1) rotate(-45deg);opacity:1;}
 }
 </style>
 </head>
@@ -71,7 +133,7 @@ small{
   <input type="text" name="mesa">
 
   <label>Nº DE PESSOAS</label>
-  <input type="text" name="pessoas" required>
+  <input type="text" name="pessoas" id="pessoas" required>
 
   <label>CONTATO</label>
   <input type="tel" name="contato" id="telefone" placeholder="(00) 00000-0000" required>
@@ -93,6 +155,11 @@ small{
   <small>Bem-vindo ao formulário de reservas.  
   Lembrando que cobramos couvert artístico de quarta a sábado e taxa de 10% em todas as reservas.  
   Após o envio, aguarde nossa confirmação. Obrigado pela preferência!</small>
+
+  <div id="sucesso">
+    <div class="check"></div>
+    <p>Reserva enviada com sucesso!<br>Aguarde nossa confirmação.</p>
+  </div>
 </form>
 
 <script>
@@ -107,6 +174,11 @@ document.getElementById('telefone').addEventListener('input', function(e) {
   else if (x.length > 0) e.target.value = `(${ddd}`;
 });
 
+// Apenas números em "pessoas"
+document.getElementById('pessoas').addEventListener('input', e=>{
+  e.target.value = e.target.value.replace(/\D/g,'');
+});
+
 // Envio ao Google Apps Script
 document.getElementById('formReserva').addEventListener('submit', async (e)=>{
   e.preventDefault();
@@ -114,14 +186,17 @@ document.getElementById('formReserva').addEventListener('submit', async (e)=>{
   const data = Object.fromEntries(new FormData(form).entries());
 
   try{
-    const resposta = await fetch("https://script.google.com/macros/s/AKfycbzrb2raIJw_n4CBooUtm0QMoA7v19aFlZjZuKGnL1wfMSjNDgT97RQTDH2LMd35A-NY2Q/exec", {
+    const resposta = await fetch("https://script.google.com/macros/s/AKfycby2Um5bfgOn42mTwZYwZw7EApH_LHO2sHVV_ACu7_ovL6uwgXdkNrgnV0sfcSnDgays/exec", {
       method:"POST",
       body:JSON.stringify(data),
       headers:{"Content-Type":"application/json"}
     });
     if(resposta.ok){
-      alert("✅ Reserva enviada com sucesso! Aguarde nossa confirmação.");
-      form.reset();
+      document.getElementById("sucesso").classList.add("active");
+      setTimeout(()=>{
+        document.getElementById("sucesso").classList.remove("active");
+        form.reset();
+      },3000);
     }else alert("❌ Erro ao enviar. Tente novamente.");
   }catch(err){
     alert("Erro de conexão. Verifique sua internet.");
