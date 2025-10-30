@@ -143,7 +143,7 @@ document.getElementById('formReserva').addEventListener('submit', async e=>{
   const data = Object.fromEntries(new FormData(form).entries());
 
   try{
-    const resp = await fetch("https://script.google.com/macros/s/AKfycbyM9-jMVhmPAquzwdD5ZHqdMy8TX_4oCTSVWuvFU8wgkSJ7X5cDgNustxlAW0HOyR9lJw/exec", {
+    const resp = await fetch("https://script.google.com/macros/s/AKfycby2s_jpiDARTR3sKuRqtqeSQY08gInUI_QVP-g9dARSuk0BTZQ0CkkHcNSJNHao-TlBlQ/exec", {
       method:"POST",
       body:JSON.stringify(data),
       headers:{"Content-Type":"application/json"}
