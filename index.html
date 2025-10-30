@@ -261,7 +261,7 @@ document.getElementById('formReserva').addEventListener('submit', async e=>{
   const overlay = document.getElementById('overlay');
   overlay.classList.add('active');
   try{
-    const resp = await fetch("https://script.google.com/macros/s/AKfycbzY0vnkKrb5i1XJLlX-PHYmlNsFanZnkCfs_c1M5ajcMgZouZex_4nbhET-qzvSJ2o_/exec", {
+    const resp = await fetch("https://script.google.com/macros/s/AKfycbz6OXNzILN-8_j9fVK7da429IPuUrbWvLIsu1WEo8sBaxbb6AymCqj3pf5QwVeHdBU_/exec", {
       method:"POST",
       headers:{"Content-Type":"application/json"},
       body:JSON.stringify(data)
