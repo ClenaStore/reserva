@@ -68,15 +68,7 @@ document.getElementById('formReserva').addEventListener('submit',async e=>{
   const overlay=document.getElementById('overlay');
   overlay.classList.add('active');
   const form=e.target;
-  const data = Object.fromEntries(new FormData(form).entries());
-
-// Corrige a data (problema de fuso horário)
-if (data.data) {
-  const localDate = new Date(data.data + "T00:00:00"); // cria com horário local
-  const adjusted = new Date(localDate.getTime() + localDate.getTimezoneOffset() * 60000);
-  data.data = adjusted.toISOString().split("T")[0]; // regrava no formato yyyy-mm-dd
-}
-
+  const data=Object.fromEntries(new FormData(form).entries());
 
   try{
     const controller = new AbortController();
