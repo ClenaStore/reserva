@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-<title>Reserva</title>
+<title>Reserva Delícia Gourmet</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
 <style>
 :root{--bg:#0b0f19;--card:#151d2f;--text:#fff;--accent:#b8860b;--muted:#94a3b8;}
@@ -30,17 +30,30 @@ button:hover{opacity:.9;transform:scale(1.02);}
 
 <form id="formReserva">
   <h2>RESERVA DELÍCIA GOURMET</h2>
-  <label>NOME</label><input type="text" name="nome" required>
-  <label>DATA</label><input type="date" name="data" required>
-  <label>HORÁRIO</label><input type="time" name="horario" required>
-  <label>MESA</label><input type="text" name="mesa">
-  <label>Nº DE PESSOAS</label><input type="text" name="pessoas" id="pessoas" required>
-  <label>CONTATO</label><input type="tel" name="contato" id="telefone" placeholder="(00) 00000-0000" required>
+  <label>NOME COMPLETO</label><input type="text" name="nome" required>
+
   <label>EMAIL</label><input type="email" name="email" class="email-field" required>
+
+  <label>CELULAR</label><input type="tel" name="celular" id="telefone" placeholder="(00) 00000-0000" required>
+
+  <label>DATA DA RESERVA</label><input type="date" name="data" required>
+
+  <label>HORÁRIO</label><input type="time" name="horario" required>
+
+  <label>NÚMERO DA MESA</label><input type="text" name="mesa">
+
+  <label>QUANTIDADE DE PESSOAS</label><input type="text" name="pessoas" id="pessoas" required>
+
   <label>OCASIÃO</label><input type="text" name="ocasiao">
+
   <label>DECORAÇÃO</label><input type="text" name="decoracao">
-  <label>COMANDAS INDIVIDUAIS</label>
-  <select name="comandas"><option value="SIM">SIM</option><option value="NÃO">NÃO</option></select>
+
+  <label>COMANDA INDIVIDUAL</label>
+  <select name="comandas">
+    <option value="Sim">Sim</option>
+    <option value="Não">Não</option>
+  </select>
+
   <button type="submit">ENVIAR RESERVA</button>
   <small>Cobramos couvert artístico de quarta a sábado e taxa de 10%.</small>
   <div id="sucesso"><div class="check"></div><p>Reserva enviada com sucesso!</p></div>
@@ -51,6 +64,7 @@ button:hover{opacity:.9;transform:scale(1.02);}
 <script>
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycby22lwBubAaNhbj8oqNx-NSTc43g1dPwqm7BqDM9EESf-lCjzIeK9jFdvigjgispcNAaA/exec";
 
+// Mascara telefone
 document.getElementById('telefone').addEventListener('input', e=>{
   let x=e.target.value.replace(/\D/g,'').substring(0,11);
   let ddd=x.substring(0,2),p1=x.substring(2,7),p2=x.substring(7,11);
@@ -59,28 +73,35 @@ document.getElementById('telefone').addEventListener('input', e=>{
   else if(x.length>0)e.target.value=`(${ddd}`;
 });
 
+// Apenas números em "pessoas"
 document.getElementById('pessoas').addEventListener('input',e=>{
   e.target.value=e.target.value.replace(/\D/g,'');
 });
 
+// Envio da reserva
 document.getElementById('formReserva').addEventListener('submit',async e=>{
   e.preventDefault();
   const overlay=document.getElementById('overlay');
   overlay.classList.add('active');
   const form=e.target;
-  const data=Object.fromEntries(new FormData(form).entries());
+  const dados=Object.fromEntries(new FormData(form).entries());
+
+  // gera código automático no formato RSV-AAAAmmdd-HHmmss
+  const agora=new Date();
+  const codigo=`RSV-${agora.getFullYear()}${String(agora.getMonth()+1).padStart(2,'0')}${String(agora.getDate()).padStart(2,'0')}-${String(agora.getHours()).padStart(2,'0')}${String(agora.getMinutes()).padStart(2,'0')}${String(agora.getSeconds()).padStart(2,'0')}`;
+
+  dados.codigo=codigo;
 
   try{
-    const controller = new AbortController();
-    const timeout = setTimeout(()=>controller.abort(), 10000); // timeout 10s
+    const controller=new AbortController();
+    const timeout=setTimeout(()=>controller.abort(),10000);
     const resp=await fetch(SCRIPT_URL,{
       method:"POST",
       headers:{"Content-Type":"application/json"},
-      body:JSON.stringify(data),
+      body:JSON.stringify(dados),
       signal:controller.signal
     });
     clearTimeout(timeout);
-
     const json=await resp.json();
     overlay.classList.remove('active');
 
@@ -88,7 +109,7 @@ document.getElementById('formReserva').addEventListener('submit',async e=>{
       document.getElementById('sucesso').classList.add('active');
       setTimeout(()=>{document.getElementById('sucesso').classList.remove('active');form.reset();},4000);
     }else{
-      alert("Erro: "+(json.mensagem||json.message||"Falha ao enviar reserva."));
+      alert("Erro: "+(json.mensagem||"Falha ao enviar reserva."));
     }
   }catch(err){
     overlay.classList.remove('active');
