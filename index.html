@@ -3,120 +3,122 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-<title>Reserva Delícia Gourmet</title>
+<title>Reserva • Delícia Gourmet</title>
+
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+
 <style>
-:root{--bg:#0b0f19;--card:#151d2f;--text:#fff;--accent:#b8860b;--muted:#94a3b8;}
+:root{
+  --bg:#0b0f19;
+  --card:#151d2f;
+  --text:#f8fafc;
+  --accent:#b8860b;
+  --muted:#94a3b8;
+  --radius:10px;
+}
 *{box-sizing:border-box;margin:0;padding:0;font-family:'Inter',sans-serif;text-transform:uppercase;}
-body{background:var(--bg);color:var(--text);display:flex;align-items:center;justify-content:center;min-height:100vh;padding:1rem;}
-form{background:var(--card);padding:2rem 1.5rem;border-radius:1rem;width:100%;max-width:420px;box-shadow:0 0 15px #0005;position:relative;}
-h2{text-align:center;margin-bottom:1rem;color:var(--accent);}
-label{display:block;margin-top:1rem;font-weight:600;color:var(--muted);font-size:.85rem;}
-input,select{width:100%;padding:.75rem;border:none;border-radius:.5rem;margin-top:.3rem;background:#1e293b;color:var(--text);font-size:.9rem;}
-.email-field{border:2px solid var(--accent);background:#0f172a;}
-button{margin-top:1.5rem;width:100%;padding:1rem;background:var(--accent);border:none;border-radius:.5rem;color:#fff;font-weight:600;cursor:pointer;transition:.3s;}
-button:hover{opacity:.9;transform:scale(1.02);}
-#overlay{position:fixed;inset:0;background:rgba(0,0,0,.85);display:flex;flex-direction:column;align-items:center;justify-content:center;color:white;z-index:999;font-size:1.1rem;backdrop-filter:blur(4px);opacity:0;pointer-events:none;transition:.4s;}
-#overlay.active{opacity:1;pointer-events:all;}
-.loader{border:4px solid #333;border-top:4px solid var(--accent);border-radius:50%;width:60px;height:60px;animation:spin 1s linear infinite;margin-bottom:1rem;}
-@keyframes spin{0%{transform:rotate(0deg);}100%{transform:rotate(360deg);}}
-#sucesso{position:absolute;inset:0;background:rgba(0,0,0,.8);display:flex;align-items:center;justify-content:center;flex-direction:column;color:#fff;font-size:1rem;backdrop-filter:blur(4px);opacity:0;pointer-events:none;transition:.4s;}
-#sucesso.active{opacity:1;pointer-events:all;}
-.check{width:80px;height:80px;border:4px solid #16a34a;border-radius:50%;display:flex;align-items:center;justify-content:center;margin-bottom:1rem;}
-.check::after{content:'';width:30px;height:15px;border-left:4px solid #16a34a;border-bottom:4px solid #16a34a;transform:rotate(-45deg);}
+body{
+  background:var(--bg);color:var(--text);
+  display:flex;align-items:center;justify-content:center;
+  min-height:100vh;padding:1rem;
+}
+form{
+  background:var(--card);
+  padding:2rem 1.5rem;border-radius:1rem;
+  width:100%;max-width:420px;box-shadow:0 0 15px #0005;
+}
+h2{
+  text-align:center;margin-bottom:1.5rem;
+  color:var(--accent);font-weight:600;letter-spacing:1px;
+}
+label{
+  display:block;font-size:.8rem;color:var(--muted);margin-bottom:.3rem;
+}
+input,select{
+  width:100%;padding:.7rem .8rem;margin-bottom:1rem;
+  border:none;border-radius:var(--radius);
+  background:#1e2535;color:var(--text);
+  font-size:.9rem;
+}
+input:focus,select:focus{outline:1px solid var(--accent);}
+button{
+  width:100%;background:var(--accent);
+  color:var(--bg);border:none;
+  padding:.9rem;border-radius:var(--radius);
+  font-weight:600;font-size:1rem;cursor:pointer;
+  transition:.2s;
+}
+button:hover{background:#c99700;}
+p{font-size:.8rem;color:var(--muted);margin-top:1rem;text-align:center;}
 </style>
 </head>
+
 <body>
+  <form id="formReserva">
+    <h2>RESERVA DELÍCIA GOURMET</h2>
 
-<form id="formReserva">
-  <h2>RESERVA DELÍCIA GOURMET</h2>
-  <label>NOME COMPLETO</label><input type="text" name="nome" required>
+    <label>Nome Completo</label>
+    <input type="text" id="nome" required>
 
-  <label>EMAIL</label><input type="email" name="email" class="email-field" required>
+    <label>Celular</label>
+    <input type="tel" id="celular" placeholder="(00) 00000-0000" required>
 
-  <label>CELULAR</label><input type="tel" name="celular" id="telefone" placeholder="(00) 00000-0000" required>
+    <label>Data da Reserva</label>
+    <input type="date" id="data" required>
 
-  <label>DATA DA RESERVA</label><input type="date" name="data" required>
+    <label>Horário</label>
+    <input type="time" id="hora" required>
 
-  <label>HORÁRIO</label><input type="time" name="horario" required>
+    <label>Número da Mesa</label>
+    <input type="text" id="mesa">
 
-  <label>NÚMERO DA MESA</label><input type="text" name="mesa">
+    <label>Quantidade de Pessoas</label>
+    <input type="number" id="quantidade" min="1" required>
 
-  <label>QUANTIDADE DE PESSOAS</label><input type="text" name="pessoas" id="pessoas" required>
+    <label>Ocasião</label>
+    <input type="text" id="ocasiao">
 
-  <label>OCASIÃO</label><input type="text" name="ocasiao">
+    <label>Decoração</label>
+    <input type="text" id="decoracao">
 
-  <label>DECORAÇÃO</label><input type="text" name="decoracao">
+    <label>Comanda Individual</label>
+    <select id="comanda">
+      <option>SIM</option>
+      <option>NÃO</option>
+    </select>
 
-  <label>COMANDA INDIVIDUAL</label>
-  <select name="comandas">
-    <option value="Sim">Sim</option>
-    <option value="Não">Não</option>
-  </select>
+    <button type="submit">ENVIAR RESERVA</button>
 
-  <button type="submit">ENVIAR RESERVA</button>
-  <small>Cobramos couvert artístico de quarta a sábado e taxa de 10%.</small>
-  <div id="sucesso"><div class="check"></div><p>Reserva enviada com sucesso!</p></div>
-</form>
-
-<div id="overlay"><div class="loader"></div><p>ENVIANDO SUA RESERVA...</p></div>
+    <p>COBRAMOS COUVERT ARTÍSTICO DE QUARTA A SÁBADO<br>E TAXA DE 10%.</p>
+  </form>
 
 <script>
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycby22lwBubAaNhbj8oqNx-NSTc43g1dPwqm7BqDM9EESf-lCjzIeK9jFdvigjgispcNAaA/exec";
-
-// Mascara telefone
-document.getElementById('telefone').addEventListener('input', e=>{
-  let x=e.target.value.replace(/\D/g,'').substring(0,11);
-  let ddd=x.substring(0,2),p1=x.substring(2,7),p2=x.substring(7,11);
-  if(x.length>7)e.target.value=`(${ddd}) ${p1}-${p2}`;
-  else if(x.length>2)e.target.value=`(${ddd}) ${p1}`;
-  else if(x.length>0)e.target.value=`(${ddd}`;
-});
-
-// Apenas números em "pessoas"
-document.getElementById('pessoas').addEventListener('input',e=>{
-  e.target.value=e.target.value.replace(/\D/g,'');
-});
-
-// Envio da reserva
-document.getElementById('formReserva').addEventListener('submit',async e=>{
+document.getElementById('formReserva').addEventListener('submit', async (e)=>{
   e.preventDefault();
-  const overlay=document.getElementById('overlay');
-  overlay.classList.add('active');
-  const form=e.target;
-  const dados=Object.fromEntries(new FormData(form).entries());
 
-  // gera código automático no formato RSV-AAAAmmdd-HHmmss
-  const agora=new Date();
-  const codigo=`RSV-${agora.getFullYear()}${String(agora.getMonth()+1).padStart(2,'0')}${String(agora.getDate()).padStart(2,'0')}-${String(agora.getHours()).padStart(2,'0')}${String(agora.getMinutes()).padStart(2,'0')}${String(agora.getSeconds()).padStart(2,'0')}`;
+  const dados = {
+    acao: "novaReserva",
+    nome: document.getElementById('nome').value.trim(),
+    celular: document.getElementById('celular').value.trim(),
+    data: document.getElementById('data').value,
+    hora: document.getElementById('hora').value,
+    mesa: document.getElementById('mesa').value.trim(),
+    quantidade: document.getElementById('quantidade').value,
+    ocasiao: document.getElementById('ocasiao').value.trim(),
+    decoracao: document.getElementById('decoracao').value.trim(),
+    comanda: document.getElementById('comanda').value
+  };
 
-  dados.codigo=codigo;
+  const resp = await fetch("https://script.google.com/macros/s/AKfycby7X4je1jsA9mQdpC8-zyjIRoUU5i42fPnUVTlTWgGc3TW8rTF1ttSGPM1AF3W0C4JGdw/exec", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(dados)
+  });
 
-  try{
-    const controller=new AbortController();
-    const timeout=setTimeout(()=>controller.abort(),10000);
-    const resp=await fetch(SCRIPT_URL,{
-      method:"POST",
-      headers:{"Content-Type":"application/json"},
-      body:JSON.stringify(dados),
-      signal:controller.signal
-    });
-    clearTimeout(timeout);
-    const json=await resp.json();
-    overlay.classList.remove('active');
-
-    if(json.status==="success"||json.sucesso){
-      document.getElementById('sucesso').classList.add('active');
-      setTimeout(()=>{document.getElementById('sucesso').classList.remove('active');form.reset();},4000);
-    }else{
-      alert("Erro: "+(json.mensagem||"Falha ao enviar reserva."));
-    }
-  }catch(err){
-    overlay.classList.remove('active');
-    alert("Erro de conexão. Verifique o link do script ou tente novamente.");
-  }
+  const resultado = await resp.json();
+  alert(resultado.mensagem || "Reserva enviada!");
+  e.target.reset();
 });
 </script>
-
 </body>
 </html>
