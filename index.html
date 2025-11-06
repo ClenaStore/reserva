@@ -2,122 +2,113 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-<title>Reserva • Delícia Gourmet</title>
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reserva de Mesa • Delícia Gourmet</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
-
 <style>
 :root{
-  --bg:#0b0f19;
-  --card:#151d2f;
-  --text:#f8fafc;
-  --accent:#b8860b;
-  --muted:#94a3b8;
-  --radius:10px;
+  --bg:#0b0f19;--card:#151d2f;--text:#fff;--accent:#b8860b;--muted:#94a3b8;
 }
 *{box-sizing:border-box;margin:0;padding:0;font-family:'Inter',sans-serif;text-transform:uppercase;}
-body{
-  background:var(--bg);color:var(--text);
-  display:flex;align-items:center;justify-content:center;
-  min-height:100vh;padding:1rem;
+body{background:var(--bg);color:var(--text);display:flex;align-items:center;justify-content:center;min-height:100vh;padding:1rem;}
+form{background:var(--card);padding:2rem 1.5rem;border-radius:1rem;width:100%;max-width:420px;box-shadow:0 0 15px #0005;position:relative;}
+h2{text-align:center;margin-bottom:1.5rem;color:var(--accent);font-weight:600;}
+label{display:block;margin:0.5rem 0 0.25rem;font-size:0.9rem;color:var(--muted);}
+input,select,textarea{
+  width:100%;padding:0.75rem;border:none;border-radius:8px;background:#1f2937;color:var(--text);
+  outline:none;font-size:0.95rem;margin-bottom:0.75rem;
 }
-form{
-  background:var(--card);
-  padding:2rem 1.5rem;border-radius:1rem;
-  width:100%;max-width:420px;box-shadow:0 0 15px #0005;
-}
-h2{
-  text-align:center;margin-bottom:1.5rem;
-  color:var(--accent);font-weight:600;letter-spacing:1px;
-}
-label{
-  display:block;font-size:.8rem;color:var(--muted);margin-bottom:.3rem;
-}
-input,select{
-  width:100%;padding:.7rem .8rem;margin-bottom:1rem;
-  border:none;border-radius:var(--radius);
-  background:#1e2535;color:var(--text);
-  font-size:.9rem;
-}
-input:focus,select:focus{outline:1px solid var(--accent);}
 button{
-  width:100%;background:var(--accent);
-  color:var(--bg);border:none;
-  padding:.9rem;border-radius:var(--radius);
-  font-weight:600;font-size:1rem;cursor:pointer;
-  transition:.2s;
+  width:100%;background:var(--accent);color:#fff;padding:0.9rem;border:none;border-radius:8px;
+  font-weight:600;cursor:pointer;margin-top:0.5rem;transition:.2s;
 }
-button:hover{background:#c99700;}
-p{font-size:.8rem;color:var(--muted);margin-top:1rem;text-align:center;}
+button:hover{background:#d4af37;}
+p.info{text-align:center;font-size:0.8rem;color:var(--muted);margin-top:1rem;line-height:1.4;}
+.overlay{
+  display:none;position:absolute;inset:0;background:#000a;backdrop-filter:blur(4px);
+  align-items:center;justify-content:center;border-radius:1rem;
+}
+.overlay.active{display:flex;}
+.overlay span{
+  background:#1f2937;padding:1rem 2rem;border-radius:1rem;color:var(--accent);
+  font-weight:600;animation:pulse 1s infinite;
+}
+@keyframes pulse{0%{opacity:1}50%{opacity:.5}100%{opacity:1}}
 </style>
 </head>
-
 <body>
-  <form id="formReserva">
-    <h2>RESERVA DELÍCIA GOURMET</h2>
+<form id="formReserva">
+  <h2>FAÇA SUA RESERVA</h2>
 
-    <label>Nome Completo</label>
-    <input type="text" id="nome" required>
+  <label for="nome">Nome Completo</label>
+  <input type="text" id="nome" name="nome" required>
 
-    <label>Celular</label>
-    <input type="tel" id="celular" placeholder="(00) 00000-0000" required>
+  <label for="celular">Celular</label>
+  <input type="tel" id="celular" name="celular" placeholder="(00) 00000-0000" required>
 
-    <label>Data da Reserva</label>
-    <input type="date" id="data" required>
+  <label for="data">Data da Reserva</label>
+  <input type="date" id="data" name="data" required>
 
-    <label>Horário</label>
-    <input type="time" id="hora" required>
+  <label for="hora">Horário</label>
+  <input type="time" id="hora" name="hora" required>
 
-    <label>Número da Mesa</label>
-    <input type="text" id="mesa">
+  <label for="mesa">Número da Mesa</label>
+  <input type="number" id="mesa" name="mesa" required>
 
-    <label>Quantidade de Pessoas</label>
-    <input type="number" id="quantidade" min="1" required>
+  <label for="quantidade">Quantidade de Pessoas</label>
+  <input type="number" id="quantidade" name="quantidade" required>
 
-    <label>Ocasião</label>
-    <input type="text" id="ocasiao">
+  <label for="ocasiao">Ocasião</label>
+  <input type="text" id="ocasiao" name="ocasiao">
 
-    <label>Decoração</label>
-    <input type="text" id="decoracao">
+  <label for="decoracao">Decoração</label>
+  <input type="text" id="decoracao" name="decoracao">
 
-    <label>Comanda Individual</label>
-    <select id="comanda">
-      <option>SIM</option>
-      <option>NÃO</option>
-    </select>
+  <label for="comanda">Comanda Individual</label>
+  <select id="comanda" name="comanda" required>
+    <option value="">Selecione</option>
+    <option value="SIM">SIM</option>
+    <option value="NÃO">NÃO</option>
+  </select>
 
-    <button type="submit">ENVIAR RESERVA</button>
+  <button type="submit">ENVIAR RESERVA</button>
+  <p class="info">COBRAMOS COUVERT ARTÍSTICO DE QUARTA A SÁBADO<br>E TAXA DE 10%</p>
 
-    <p>COBRAMOS COUVERT ARTÍSTICO DE QUARTA A SÁBADO<br>E TAXA DE 10%.</p>
-  </form>
+  <div class="overlay" id="overlay"><span>Enviando...</span></div>
+</form>
 
 <script>
-document.getElementById('formReserva').addEventListener('submit', async (e)=>{
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxDgw5Gw3qBXtt2mDmmOKuvBmNTotm7TkCj-aSn3B83Ov0Vh8HZVJBhqS_12vOckWFg/exec"; // substitua pelo seu link do Apps Script
+
+const form = document.getElementById("formReserva");
+const overlay = document.getElementById("overlay");
+
+form.addEventListener("submit", async (e) => {
   e.preventDefault();
+  overlay.classList.add("active");
 
-  const dados = {
-    acao: "novaReserva",
-    nome: document.getElementById('nome').value.trim(),
-    celular: document.getElementById('celular').value.trim(),
-    data: document.getElementById('data').value,
-    hora: document.getElementById('hora').value,
-    mesa: document.getElementById('mesa').value.trim(),
-    quantidade: document.getElementById('quantidade').value,
-    ocasiao: document.getElementById('ocasiao').value.trim(),
-    decoracao: document.getElementById('decoracao').value.trim(),
-    comanda: document.getElementById('comanda').value
-  };
+  const dados = Object.fromEntries(new FormData(form));
+  dados.acao = "registrarReserva";
 
-  const resp = await fetch("https://script.google.com/macros/s/AKfycby7X4je1jsA9mQdpC8-zyjIRoUU5i42fPnUVTlTWgGc3TW8rTF1ttSGPM1AF3W0C4JGdw/exec", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(dados)
-  });
+  try {
+    const res = await fetch(SCRIPT_URL, {
+      method: "POST",
+      body: JSON.stringify(dados),
+      headers: { "Content-Type": "application/json" }
+    });
+    const json = await res.json();
 
-  const resultado = await resp.json();
-  alert(resultado.mensagem || "Reserva enviada!");
-  e.target.reset();
+    overlay.classList.remove("active");
+    if (json.sucesso) {
+      alert("Reserva enviada com sucesso!");
+      form.reset();
+    } else {
+      alert("Erro ao enviar reserva: " + json.mensagem);
+    }
+  } catch (err) {
+    overlay.classList.remove("active");
+    alert("Erro de conexão: " + err.message);
+  }
 });
 </script>
 </body>
