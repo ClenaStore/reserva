@@ -5,37 +5,49 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Reserva de Mesa • Delícia Gourmet</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+
 <style>
-:root{
+:root {
   --bg:#0b0f19;--card:#151d2f;--text:#fff;--accent:#b8860b;--muted:#94a3b8;
 }
 *{box-sizing:border-box;margin:0;padding:0;font-family:'Inter',sans-serif;text-transform:uppercase;}
-body{background:var(--bg);color:var(--text);display:flex;align-items:center;justify-content:center;min-height:100vh;padding:1rem;}
-form{background:var(--card);padding:2rem 1.5rem;border-radius:1rem;width:100%;max-width:420px;box-shadow:0 0 15px #0005;position:relative;}
+body{
+  background:var(--bg);color:var(--text);
+  display:flex;align-items:center;justify-content:center;
+  min-height:100vh;padding:1rem;
+}
+form{
+  background:var(--card);padding:2rem 1.5rem;border-radius:1rem;
+  width:100%;max-width:420px;box-shadow:0 0 15px #0005;position:relative;
+}
 h2{text-align:center;margin-bottom:1.5rem;color:var(--accent);font-weight:600;}
 label{display:block;margin:0.5rem 0 0.25rem;font-size:0.9rem;color:var(--muted);}
-input,select,textarea{
-  width:100%;padding:0.75rem;border:none;border-radius:8px;background:#1f2937;color:var(--text);
+input,select{
+  width:100%;padding:0.75rem;border:none;border-radius:8px;
+  background:#1f2937;color:var(--text);
   outline:none;font-size:0.95rem;margin-bottom:0.75rem;
 }
 button{
-  width:100%;background:var(--accent);color:#fff;padding:0.9rem;border:none;border-radius:8px;
-  font-weight:600;cursor:pointer;margin-top:0.5rem;transition:.2s;
+  width:100%;background:var(--accent);color:#fff;padding:0.9rem;
+  border:none;border-radius:8px;font-weight:600;cursor:pointer;
+  margin-top:0.5rem;transition:.2s;
 }
 button:hover{background:#d4af37;}
 p.info{text-align:center;font-size:0.8rem;color:var(--muted);margin-top:1rem;line-height:1.4;}
 .overlay{
-  display:none;position:absolute;inset:0;background:#000a;backdrop-filter:blur(4px);
-  align-items:center;justify-content:center;border-radius:1rem;
+  display:none;position:absolute;inset:0;background:#000a;
+  backdrop-filter:blur(4px);align-items:center;justify-content:center;
+  border-radius:1rem;
 }
 .overlay.active{display:flex;}
 .overlay span{
-  background:#1f2937;padding:1rem 2rem;border-radius:1rem;color:var(--accent);
-  font-weight:600;animation:pulse 1s infinite;
+  background:#1f2937;padding:1rem 2rem;border-radius:1rem;
+  color:var(--accent);font-weight:600;animation:pulse 1s infinite;
 }
 @keyframes pulse{0%{opacity:1}50%{opacity:.5}100%{opacity:1}}
 </style>
 </head>
+
 <body>
 <form id="formReserva">
   <h2>FAÇA SUA RESERVA</h2>
@@ -53,10 +65,10 @@ p.info{text-align:center;font-size:0.8rem;color:var(--muted);margin-top:1rem;lin
   <input type="time" id="hora" name="hora" required>
 
   <label for="mesa">Número da Mesa</label>
-  <input type="number" id="mesa" name="mesa" required>
+  <input type="number" id="mesa" name="mesa" min="1" required>
 
   <label for="quantidade">Quantidade de Pessoas</label>
-  <input type="number" id="quantidade" name="quantidade" required>
+  <input type="number" id="quantidade" name="quantidade" min="1" required>
 
   <label for="ocasiao">Ocasião</label>
   <input type="text" id="ocasiao" name="ocasiao">
@@ -74,12 +86,11 @@ p.info{text-align:center;font-size:0.8rem;color:var(--muted);margin-top:1rem;lin
   <button type="submit">ENVIAR RESERVA</button>
   <p class="info">COBRAMOS COUVERT ARTÍSTICO DE QUARTA A SÁBADO<br>E TAXA DE 10%</p>
 
-  <div class="overlay" id="overlay"><span>Enviando...</span></div>
+  <div class="overlay" id="overlay"><span>ENVIANDO...</span></div>
 </form>
 
 <script>
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyIJaT-iOBBzltRgXCTGWI5kwu6CoutW6V-ZcqYDmjG-MJXsIKUv1lRn1Z5chMeKiXs/exec"; // substitua pelo seu link do Apps Script
-
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyIJaT-iOBBzltRgXCTGWI5kwu6CoutW6V-ZcqYDmjG-MJXsIKUv1lRn1Z5chMeKiXs/exec";
 const form = document.getElementById("formReserva");
 const overlay = document.getElementById("overlay");
 
@@ -91,23 +102,27 @@ form.addEventListener("submit", async (e) => {
   dados.acao = "registrarReserva";
 
   try {
-    const res = await fetch(SCRIPT_URL, {
+    const response = await fetch(SCRIPT_URL, {
       method: "POST",
-      body: JSON.stringify(dados),
-      headers: { "Content-Type": "application/json" }
+      mode: "cors",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(dados)
     });
-    const json = await res.json();
+
+    if (!response.ok) throw new Error("Erro HTTP: " + response.status);
+    const result = await response.json();
 
     overlay.classList.remove("active");
-    if (json.sucesso) {
-      alert("Reserva enviada com sucesso!");
+    if (result.sucesso) {
+      alert("✅ Reserva enviada com sucesso!");
       form.reset();
     } else {
-      alert("Erro ao enviar reserva: " + json.mensagem);
+      alert("⚠️ Erro ao enviar reserva: " + result.mensagem);
     }
+
   } catch (err) {
     overlay.classList.remove("active");
-    alert("Erro de conexão: " + err.message);
+    alert("❌ Falha na conexão com o servidor.\n" + err.message);
   }
 });
 </script>
