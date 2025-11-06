@@ -2,49 +2,57 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>Reserva de Mesa • Delícia Gourmet</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
 
 <style>
-:root {
-  --bg:#0b0f19;--card:#151d2f;--text:#fff;--accent:#b8860b;--muted:#94a3b8;
+:root{
+  --bg:#0b0f19;--card:#161d2f;--text:#fff;--gold:#c9a227;
+  --muted:#9ca3af;--ok:#22c55e;--radius:14px;
 }
-*{box-sizing:border-box;margin:0;padding:0;font-family:'Inter',sans-serif;text-transform:uppercase;}
+*{box-sizing:border-box;margin:0;padding:0;font-family:'Inter',sans-serif;}
 body{
   background:var(--bg);color:var(--text);
   display:flex;align-items:center;justify-content:center;
   min-height:100vh;padding:1rem;
 }
 form{
-  background:var(--card);padding:2rem 1.5rem;border-radius:1rem;
-  width:100%;max-width:420px;box-shadow:0 0 15px #0005;position:relative;
+  width:100%;max-width:420px;background:var(--card);
+  padding:2rem 1.5rem;border-radius:var(--radius);
+  box-shadow:0 4px 20px #0005;position:relative;
 }
-h2{text-align:center;margin-bottom:1.5rem;color:var(--accent);font-weight:600;}
-label{display:block;margin:0.5rem 0 0.25rem;font-size:0.9rem;color:var(--muted);}
+h2{text-align:center;margin-bottom:1.5rem;color:var(--gold);font-weight:600;}
+label{display:block;margin:0.6rem 0 0.25rem;color:var(--muted);font-size:0.9rem;}
 input,select{
-  width:100%;padding:0.75rem;border:none;border-radius:8px;
-  background:#1f2937;color:var(--text);
-  outline:none;font-size:0.95rem;margin-bottom:0.75rem;
+  width:100%;padding:0.8rem;border:none;border-radius:var(--radius);
+  background:#1e2639;color:var(--text);font-size:1rem;margin-bottom:0.8rem;
 }
 button{
-  width:100%;background:var(--accent);color:#fff;padding:0.9rem;
-  border:none;border-radius:8px;font-weight:600;cursor:pointer;
-  margin-top:0.5rem;transition:.2s;
+  width:100%;padding:0.9rem;border:none;border-radius:var(--radius);
+  background:var(--gold);color:#000;font-weight:600;
+  letter-spacing:1px;cursor:pointer;transition:.2s;
 }
-button:hover{background:#d4af37;}
-p.info{text-align:center;font-size:0.8rem;color:var(--muted);margin-top:1rem;line-height:1.4;}
+button:hover{background:#ffd54a;}
+p.info{text-align:center;margin-top:1rem;color:var(--muted);font-size:0.8rem;}
+
 .overlay{
-  display:none;position:absolute;inset:0;background:#000a;
-  backdrop-filter:blur(4px);align-items:center;justify-content:center;
-  border-radius:1rem;
+  display:none;position:absolute;inset:0;backdrop-filter:blur(4px);
+  background:#0008;align-items:center;justify-content:center;border-radius:var(--radius);
 }
 .overlay.active{display:flex;}
 .overlay span{
-  background:#1f2937;padding:1rem 2rem;border-radius:1rem;
-  color:var(--accent);font-weight:600;animation:pulse 1s infinite;
+  color:var(--gold);font-weight:600;font-size:1.1rem;
+  animation:pulse 1s infinite;
 }
 @keyframes pulse{0%{opacity:1}50%{opacity:.5}100%{opacity:1}}
+.success,.error{
+  position:fixed;bottom:20px;left:50%;transform:translateX(-50%);
+  background:#1e2639;padding:1rem 2rem;border-radius:var(--radius);
+  font-weight:600;display:none;
+}
+.success{color:var(--ok);border:1px solid var(--ok);}
+.error{color:#ef4444;border:1px solid #ef4444;}
 </style>
 </head>
 
@@ -52,32 +60,32 @@ p.info{text-align:center;font-size:0.8rem;color:var(--muted);margin-top:1rem;lin
 <form id="formReserva">
   <h2>FAÇA SUA RESERVA</h2>
 
-  <label for="nome">Nome Completo</label>
-  <input type="text" id="nome" name="nome" required>
+  <label>Nome Completo</label>
+  <input type="text" name="nome" required>
 
-  <label for="celular">Celular</label>
-  <input type="tel" id="celular" name="celular" placeholder="(00) 00000-0000" required>
+  <label>Celular</label>
+  <input type="tel" name="celular" placeholder="(00) 00000-0000" required>
 
-  <label for="data">Data da Reserva</label>
-  <input type="date" id="data" name="data" required>
+  <label>Data da Reserva</label>
+  <input type="date" name="data" required>
 
-  <label for="hora">Horário</label>
-  <input type="time" id="hora" name="hora" required>
+  <label>Horário</label>
+  <input type="time" name="hora" required>
 
-  <label for="mesa">Número da Mesa</label>
-  <input type="number" id="mesa" name="mesa" min="1" required>
+  <label>Número da Mesa</label>
+  <input type="number" name="mesa" min="1" required>
 
-  <label for="quantidade">Quantidade de Pessoas</label>
-  <input type="number" id="quantidade" name="quantidade" min="1" required>
+  <label>Quantidade de Pessoas</label>
+  <input type="number" name="quantidade" min="1" required>
 
-  <label for="ocasiao">Ocasião</label>
-  <input type="text" id="ocasiao" name="ocasiao">
+  <label>Ocasião</label>
+  <input type="text" name="ocasiao">
 
-  <label for="decoracao">Decoração</label>
-  <input type="text" id="decoracao" name="decoracao">
+  <label>Decoração</label>
+  <input type="text" name="decoracao">
 
-  <label for="comanda">Comanda Individual</label>
-  <select id="comanda" name="comanda" required>
+  <label>Comanda Individual</label>
+  <select name="comanda" required>
     <option value="">Selecione</option>
     <option value="SIM">SIM</option>
     <option value="NÃO">NÃO</option>
@@ -89,14 +97,19 @@ p.info{text-align:center;font-size:0.8rem;color:var(--muted);margin-top:1rem;lin
   <div class="overlay" id="overlay"><span>ENVIANDO...</span></div>
 </form>
 
-<script>
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzOC8we2veB343CJAOI9_KyqNFIzYQOwDHfr5QIaCS-7rUpuaY7RWQ09UQpFD_DiaY0/exec";
-const form = document.getElementById("formReserva");
-const overlay = document.getElementById("overlay");
+<div class="success" id="msgSucesso">✅ Reserva enviada com sucesso!</div>
+<div class="error" id="msgErro">❌ Falha na conexão. Tente novamente.</div>
 
-form.addEventListener("submit", async (e) => {
+<script>
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwuc_PQIwmfMtKc7QhGbilDKDPJWB3OYQb_a00njzKKmOs_frWeV3a5306VpKVjJl6P/exec";
+const form = document.getElementById('formReserva');
+const overlay = document.getElementById('overlay');
+const msgSucesso = document.getElementById('msgSucesso');
+const msgErro = document.getElementById('msgErro');
+
+form.addEventListener('submit', async (e)=>{
   e.preventDefault();
-  overlay.classList.add("active");
+  overlay.classList.add('active');
 
   const dados = Object.fromEntries(new FormData(form));
   dados.acao = "registrarReserva";
@@ -104,25 +117,28 @@ form.addEventListener("submit", async (e) => {
   try {
     const response = await fetch(SCRIPT_URL, {
       method: "POST",
-      mode: "cors",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(dados)
     });
 
-    if (!response.ok) throw new Error("Erro HTTP: " + response.status);
-    const result = await response.json();
+    const res = await response.json();
+    overlay.classList.remove('active');
 
-    overlay.classList.remove("active");
-    if (result.sucesso) {
-      alert("✅ Reserva enviada com sucesso!");
+    if (res.sucesso) {
+      msgSucesso.style.display = "block";
       form.reset();
+      setTimeout(()=>msgSucesso.style.display="none",3000);
     } else {
-      alert("⚠️ Erro ao enviar reserva: " + result.mensagem);
+      msgErro.innerText = "⚠️ " + res.mensagem;
+      msgErro.style.display = "block";
+      setTimeout(()=>msgErro.style.display="none",4000);
     }
 
-  } catch (err) {
-    overlay.classList.remove("active");
-    alert("❌ Falha na conexão com o servidor.\n" + err.message);
+  } catch(err){
+    overlay.classList.remove('active');
+    msgErro.innerText = "❌ Falha na conexão com o servidor.";
+    msgErro.style.display = "block";
+    setTimeout(()=>msgErro.style.display="none",4000);
   }
 });
 </script>
